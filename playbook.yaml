@@ -1,20 +1,20 @@
-- name: Install MicroK8s
-  hosts: all
-  become: true
-  tasks:
-    - name: Install snapd
-      apt:
-        name: snapd
-        state: present
-
-    - name: Install MicroK8s
-      shell: snap install microk8s --classic
-
-    - name: Allow non-root access to MicroK8s
-      shell: sudo usermod -aG microk8s $USER
-
-    - name: Configure MicroK8s
-      shell: sudo microk8s status --wait-ready
+# - name: Install MicroK8s
+#   hosts: all
+#   become: true
+#   tasks:
+#     - name: Install snapd
+#       apt:
+#         name: snapd
+#         state: present
+#
+#     - name: Install MicroK8s
+#       shell: snap install microk8s --classic
+#
+#     - name: Allow non-root access to MicroK8s
+#       shell: sudo usermod -aG microk8s $USER
+#
+#     - name: Configure MicroK8s
+#       shell: sudo microk8s status --wait-ready
 
 - name: Add nodes to Cluster
   hosts: localhost
@@ -24,9 +24,22 @@
       - pibeta
       - pigamma
   tasks:
+    - name: Get cluster nodes
+      delegate_to: pialpha
+      shell: microk8s.kubectl get nodes | awk 'NR>1 {print $1}' | xargs
+      register: cluster_nodes
+
+    - name: Gather nodes to exclude
+      set_fact:
+        exclude_nodes: "{{ cluster_nodes.stdout.split(' ') }}"
+
+    - name: Filter target nodes
+      set_fact:
+        remaining_nodes: "{{ target_nodes | difference(exclude_nodes) }}"
+
     - name: Add individual node to Cluster
       include_tasks: playbooks/add-node.yaml
-      with_items: "{{ target_nodes }}"
+      with_items: "{{ remaining_nodes }}"
       vars:
         target_node: "{{ item }}"
 
