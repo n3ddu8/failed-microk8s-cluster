@@ -13,7 +13,7 @@ You should ensure that the machine you are running the Playbook from can connect
 Update `inventory.yaml` with the IP address and sudo password for each Pi in the cluster.
 Additional Pi's can be added to hosts:
 ```yaml
-        piXXX:
+        <hostname-of-pi>:
           ansible_host:
           ansible_user:
           ansible_become: true

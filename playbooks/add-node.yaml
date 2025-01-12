@@ -1,5 +1,5 @@
 - name: Generate cmd
-  delegate_to: pialpha
+  delegate_to: "{{ groups['master'][0] }}"
   shell: microk8s add-node 
   register: join_cluster
 
