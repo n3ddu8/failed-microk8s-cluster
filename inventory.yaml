@@ -1,18 +1,20 @@
 all:
   children:
-    edge:
+    master:
       hosts:
-        pialpha:
+        <hostname-of-pi>:
           ansible_host:
           ansible_user:
           ansible_become: true
           ansible_become_password:
-        pibeta:
+    workers:
+      hosts:
+        <hostname-of-pi>:
           ansible_host:
           ansible_user:
           ansible_become: true
           ansible_become_password:
-        pigamma:
+        <hostname-of-pi>:
           ansible_host:
           ansible_user:
           ansible_become: true

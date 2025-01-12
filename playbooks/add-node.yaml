@@ -1,0 +1,8 @@
+- name: Generate cmd
+  delegate_to: "{{ groups['master'][0] }}"
+  shell: microk8s add-node 
+  register: join_cluster
+
+- name: Join to cluster
+  delegate_to: "{{ target_node }}"
+  shell: "{{ join_cluster.stdout | regex_search('microk8s join \\d*\\.\\d*\\.\\d*\\.\\d*:\\d*\\/\\w*\\/\\w*') }}"
