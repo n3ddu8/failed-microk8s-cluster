@@ -17,21 +17,16 @@
       shell: sudo microk8s status --wait-ready
 
 - name: Add nodes to Cluster
-  hosts: pialpha
+  hosts: localhost
   gather_facts: no
+  vars:
+    target_nodes:
+      - pibeta
+      - pigamma
   tasks:
-    - name: Generate cmd for PiBeta
-      shell: microk8s add-node 
-      register: join_cluster
+    - name: Add individual node to Cluster
+      include_tasks: playbooks/add-node.yaml
+      with_items: "{{ target_nodes }}"
+      vars:
+        target_node: "{{ item }}"
 
-    - name: Join PiBeta to cluster
-      shell: "{{ join_cluster.stdout | regex_search('microk8s join \\d*\\.\\d*\\.\\d*\\.\\d*:\\d*\\/\\w*\\/\\w*') }}"
-      delegate_to: pibeta
-
-    - name: Generate cmd for PiGamma
-      shell: microk8s add-node 
-      register: join_cluster
-
-    - name: Join PiGamma to cluster
-      shell: "{{ join_cluster.stdout | regex_search('microk8s join \\d*\\.\\d*\\.\\d*\\.\\d*:\\d*\\/\\w*\\/\\w*') }}"
-      delegate_to: pigamma
