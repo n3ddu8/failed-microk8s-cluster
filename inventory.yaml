@@ -1,0 +1,20 @@
+all:
+  children:
+    edge:
+      hosts:
+        pialpha:
+          ansible_host:
+          ansible_user:
+          ansible_become: true
+          ansible_become_password:
+        pibeta:
+          ansible_host:
+          ansible_user:
+          ansible_become: true
+          ansible_become_password:
+        pigamma:
+          ansible_host:
+          ansible_user:
+          ansible_become: true
+          ansible_become_password:
+
