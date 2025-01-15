@@ -2,10 +2,6 @@
   hosts: all
   become: true
   tasks:
-    - name: Install snapd
-      apt:
-        name: snapd
-        state: present
 
     - name: Install MicroK8s
       shell: snap install microk8s --classic
