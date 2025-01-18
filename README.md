@@ -75,3 +75,31 @@ With these steps complete, I now have a lightweight, automated process for build
 
 My Pi’s at the end of day 1:
 ![Day 1](/images/day1pi.JPEG)
+
+## The Second Challenge: Configuring the cluster.
+
+We have a basic cluster setup now, but there is more configuration that needs to be done to make this a usable system. Once again this should be an automated process managed by Ansible.
+
+### Configuring add-ons
+
+MicroK8s comes with a number of add-ons, the following are the add-ons I've enabled and why:
+
+#### Community add-on
+Enables the Community Add-Ons repository offering access to even more add-ons.
+
+#### DNS add-on
+Deployds CoreDNS. The MicroK8s documentation recommends always enabling this add-on.
+
+#### Helm add-on
+Enables Helm3, a Kubernetes package manager. This will enable using Helm3 charts to deploy services, where one is provided.
+
+#### Prometheus add-on
+Enables the Prometheus Operator. Prometheus is an open-source systems monitoring and alerting platform that I will be exploring at a later date.
+
+#### CIS Hardening add-on
+Enables Kubernetes specific CIS configurations. This is a set of security configurations recommended by the MicroK8s team. More information on exactly what is enabled is given in the [docs](https://microk8s.io/docs/how-to-cis-harden#control-plane-security-configuration). For now I will be using this in the default configuration.
+
+#### Portainer add-on
+Enables the Portainer service. This is a Web GUI for managing containers.
+
+There are more add-ons that we might add at a later date as they become applicable, but for now this is a good start.
